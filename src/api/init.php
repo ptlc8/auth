@@ -28,21 +28,6 @@ function get_site_name() {
 	return get_config('SITE_NAME') ?? get_host();
 }
 
-// obtenir les informations du site
-function get_site_data() {
-	$site_data = new stdClass();
-	$site_data->description = get_config('SITE_DESCRIPTION') ?? '';
-	$site_data->keywords = get_config('SITE_KEYWORDS') ?? '';
-	$site_data->author = get_config('SITE_AUTHOR') ?? '';
-	$site_data->copyright = '© '.date('Y').' '.$site_data->author.' - Tous droits réservés';
-	return $site_data;
-}
-
-// obtenir la liste des projets
-function get_sitemap() {
-	return json_decode(file_get_contents('sitemap.json'));
-}
-
 // obtenir une connexion à la base de données
 function get_database() {
 	global $mysqli;
