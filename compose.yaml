@@ -20,9 +20,9 @@ services:
       - 9000
     environment:
       DB_HOST: database
-      DB_USER: website
+      DB_USER: auth
       DB_PASS: secret
-      DB_NAME: website
+      DB_NAME: auth
       SITE_NAME: ${SITE_NAME:-}
       HCAPTCHA_SECRET: ${HCAPTCHA_SECRET:-}
       HCAPTCHA_SITEKEY: ${HCAPTCHA_SITEKEY:-}
@@ -40,9 +40,9 @@ services:
       - database-data:/var/lib/mysql
     environment:
       MARIADB_ROOT_PASSWORD: super_secret
-      MARIADB_USER: website
+      MARIADB_USER: auth
       MARIADB_PASSWORD: secret
-      MARIADB_DATABASE: website
+      MARIADB_DATABASE: auth
     restart: always
 
 volumes:
