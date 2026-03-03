@@ -34,7 +34,7 @@ if ($request !== null && isset($_REQUEST['password'], $_REQUEST['password2'])) {
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 	</head>
 	<body>
-		<section class="floating container">
+		<section class="box column">
 			<?php if ($request === null) { ?>
 				<h1>Cette requête n'existe pas ou a expirée 🤕</h1>
 			<?php } else if (!$success) { ?>

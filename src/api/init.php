@@ -116,4 +116,24 @@ function verify_hcaptcha($response) {
 	$hcaptcha_response = file_get_contents('https://hcaptcha.com/siteverify?secret='.$hcaptcha_secret.'&response='.rawurlencode($response).'&remoteip='.$_SERVER['REMOTE_ADDR']);
 	return json_decode($hcaptcha_response)->success;
 }
+
+// convertir une date SQL UTC en format ISO 8601
+function sql_date_to_iso_date($sql_date) {
+	if (!$sql_date)
+		return null;
+	$timestamp = strtotime($sql_date);
+	if ($timestamp === false)
+		return null;
+	return date('Y-m-d\TH:i:s\Z', $timestamp);
+}
+
+// convertir une date SQL UTC en français
+function sql_date_to_french_date($sql_date) {
+	if (!$sql_date)
+		return 'inconnue';
+	$timestamp = strtotime($sql_date);
+	if ($timestamp === false)
+		return 'inconnue';
+	return date('d/m/Y H:i', $timestamp);
+}
 ?>

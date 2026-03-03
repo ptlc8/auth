@@ -25,7 +25,7 @@ if (isset($_REQUEST['username'], $_POST['password'])) {
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 	</head>
 	<body>
-		<section class="floating container">
+		<section class="box column">
 			<form method="post" action="">
 				<h1>Authentification</h1>
 				<label for="username">Nom d'utilisateur</label>

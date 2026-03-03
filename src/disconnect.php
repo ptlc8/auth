@@ -37,7 +37,7 @@ if (isset($_REQUEST['app'])) {
 		<?php if (isset($app)) { ?>
 			<div class="custom-background" style="background-image: url('<?= addslashes($app['background']) ?>');"></div>
 		<?php } ?>
-		<section class="floating container">
+		<section class="box column">
 			<?php if (!$valid_request) { ?>
 				<h1>Mmh... Cette page a été mal appelée 🤯</h1>
 				<a class="button" href="javascript:history.back()">🔙 Revenir en arrière</a>

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 	</head>
 	<body>
-		<section class="floating container">
+		<section class="box column">
 			<?php if ($deleted) { ?>
 				<h1>Compte supprimé</h1>
 				<p class="helper">Ton compte a bien été supprimé. 😫</p>

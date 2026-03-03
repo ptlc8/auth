@@ -48,7 +48,7 @@ if (isset($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password'], $_RE
 		<script src="https://www.hCaptcha.com/1/api.js" async defer></script>
 	</head>
 	<body>
-		<section class="floating container">
+		<section class="box column">
 			<form method="POST" action="">
 				<h1>Inscription</h1>
 				<label for="username">Nom d'utilisateur</label>

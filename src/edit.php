@@ -61,7 +61,7 @@ if (isset($_REQUEST['password']) && (isset($_REQUEST['username']) || isset($_REQ
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
-        <section class="floating container">
+        <section class="box column">
             <?php if (true) { ?>
                 <form method="post" action="">
                     <h1>Modifier ton compte</h1>

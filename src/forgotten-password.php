@@ -61,7 +61,7 @@ MAIL;
 		<script src="https://www.hCaptcha.com/1/api.js" async defer></script>
 	</head>
 	<body>
-		<section class="floating container">
+		<section class="box column">
 			<?php if (!$success) { ?>
 				<form method="POST" action="">
 					<h1>Mot de passe oublié</h1>

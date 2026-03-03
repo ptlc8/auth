@@ -21,7 +21,7 @@ else
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
-        <section class="container">
+        <section class="box column">
             <h1>Désauthentification réussie</h1>
             <p>Tu as bien été désauthentifié de ton compte. 😶‍🌫️</p>
             <?php if ($close) { ?>
