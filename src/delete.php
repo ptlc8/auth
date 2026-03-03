@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<p class="error">⚠ Cette action est irréversible</p>
 					<input type="submit" value="Supprimer mon compte" class="bad" />
 				</form>
-            	<a class="button" href="account.php">👤 Retour au compte</a>
+            	<a class="button" href=".">👤 Retour au compte</a>
 			<?php } ?>
 		</section>
 	</body>

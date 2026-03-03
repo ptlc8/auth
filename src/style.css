@@ -59,47 +59,6 @@ body {
 }
 
 
-/* header */
-
-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1em;
-    margin: 0 .5em 1em .5em;
-    padding: .5em;
-}
-header h1 {
-    flex: 1 0;
-    margin: .5em 0;
-}
-header h1:first-letter {
-    font-size: 1.25em;
-    color: #82b;
-}
-header .button {
-    border-radius: 3em;
-    margin: 0;
-}
-header .button img {
-    width: 3em;
-    height: 3em;
-    border-radius: 1.5em;
-}
-@media screen and (max-width: 600px) {
-    header {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-    header .account {
-        grid-row: 1;
-        grid-column: 2;
-        justify-self: self-end;
-    }
-}
-
-
 /* footer */
 
 footer {
@@ -107,64 +66,6 @@ footer {
     justify-content: center;
     margin: 1em .5em;
     padding: .5em;
-}
-
-
-/* projects deck */
-
-.deck {
-    columns: 20em auto;
-    gap: 2em;
-}
-.deck > * {
-    margin-bottom: 2em;
-}
-.card {
-    border-radius: 1em;
-    overflow: hidden;
-    transition: transform .2s, box-shadow .2s;
-}
-.card:hover {
-    transform: scale(1.02);
-    box-shadow: black 0 0 1em;
-    animation: rainbow-shadow 12s linear infinite;
-}
-.card .preview {
-    width: 100%;
-    aspect-ratio: 2;
-    object-fit: cover;
-    background: rgba(255, 255, 255, 0.5);
-}
-.card .head {
-    margin: 0 1em;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1em;
-}
-.card .head img {
-    height: 2em;
-    width: auto;
-}
-.card .head .title {
-    flex: 1;
-}
-.card .git img {
-    height: 1.5em;
-}
-.card .body {
-    margin: 0 1em 1em 1em;
-}
-.card .body p {
-    margin-top: 0;
-    text-align: center;
-}
-.card .buttons {
-    text-align: center;
-}
-.card .button {
-    background-color: rgba(0, 0, 0, 0.25);
-    margin: .2em;
 }
 
 
@@ -304,31 +205,4 @@ ul {
 }
 ::-webkit-scrollbar-thumb:hover {
 	background-color: rgba(0, 0, 0, 0.5);
-}
-
-
-/* funny stuff */
-
-@keyframes rainbow-shadow {
-	0% { box-shadow: 0 0 1em #ff0; }
-	16.666% { box-shadow: 0 0 1em #0f0; }
-	33.333% { box-shadow: 0 0 1em #0ff; }
-	50% { box-shadow: 0 0 1em #00f; }
-	66.666% { box-shadow: 0 0 1em #f0f; }
-	83.333% { box-shadow: 0 0 1em #f00; }
-	100% { box-shadow: 0 0 1em #ff0; }
-}
-
-#april-fool {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 1000000;
-	background-image: url('assets/april-fool.png');
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: center center;
-	pointer-events: none;
 }

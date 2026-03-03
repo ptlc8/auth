@@ -49,7 +49,7 @@ if (isset($_REQUEST['password']) && (isset($_REQUEST['username']) || isset($_REQ
         $error = 'Mot de passe actuel invalide. 😱';
     }
     if ($error == null)
-        exit(header('Location: account.php'));
+        exit(header('Location: .'));
 }
 ?>
 <!DOCTYPE html>
@@ -90,7 +90,7 @@ if (isset($_REQUEST['password']) && (isset($_REQUEST['username']) || isset($_REQ
                 </form>
             <?php } ?>
             <a class="button bad" href="delete.php">🗑️ Supprimer mon compte</a>
-            <a class="button" href="account.php">👤 Retour au compte</a>
+            <a class="button" href=".">👤 Retour au compte</a>
         </section>
     </body>
 </html>

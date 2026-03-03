@@ -64,7 +64,7 @@ if (isset($_REQUEST['app'])) {
 					<input type="submit" value="Connecter" class="good" autofocus />
 				</form>
 			<?php } ?>
-			<a class="button" href="account.php">👤 Mon compte</a>
+			<a class="button" href=".">👤 Mon compte</a>
 			<a class="button" href="login.php?go=<?= urlencode($_SERVER['REQUEST_URI']) ?>">🔁 Changer de compte</a>
 		</section>
 	</body>

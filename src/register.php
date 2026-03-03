@@ -69,7 +69,7 @@ if (isset($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password'], $_RE
 				<?php } ?>
 				<input type="submit" class="good" value="S'inscrire" />
 				<?php if ($error !== null) { ?>
-					<p class="error><?= $error ?></p>
+					<p class="error"><?= $error ?></p>
 				<?php } else if ($close) { ?>
 					<script>window.close();</script>
 					<p class="helper">Tu es maintenant inscrit(e), tu peux fermer cet onglet. 🎉</p>

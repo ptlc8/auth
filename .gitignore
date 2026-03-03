@@ -1,7 +1,2 @@
-src/*
-!src/errors
-!src/api
-!src/assets
-!src/*.*
 src/api/credentials.php
 .env
