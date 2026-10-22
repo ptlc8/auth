@@ -161,6 +161,18 @@ input {
     font: inherit;
 }
 
+label.checkbox {
+    margin-bottom: 0;
+}
+input[type=checkbox] {
+    display: inline-block;
+    width: auto;
+    margin: 0 8px;
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    appearance: auto;
+}
+
 .button, input[type=submit] {
     padding: 8px 16px;
     border-radius: 4px;

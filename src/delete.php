@@ -4,7 +4,7 @@ include('api/init.php');
 $user = login_from_session();
 if ($user === null)
 	exit(header('Location: login.php?go='.urlencode($_SERVER['REQUEST_URI'])));
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && check_csrf()) {
 	request_database('DELETE FROM `USERS` WHERE `id` = ', $user['id']);
 	$deleted = true;
 }
@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<form method="post" action="">
 					<h1>Supprimer ton compte</h1>
 					<p class="error">⚠ Cette action est irréversible</p>
+					<input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
 					<input type="submit" value="Supprimer mon compte" class="bad" />
 				</form>
             	<a class="button" href=".">👤 Retour au compte</a>

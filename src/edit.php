@@ -21,11 +21,11 @@ function update_user($id, $username, $email, $newpassword, $newpassword2, $first
 		array_push($frags, ', email = ', $email);
 	}
 	if ((isset($newpassword) && strlen($newpassword) > 0) || (isset($newpassword2) && strlen($newpassword2) > 0)) {
-    	if (!isset($newpassword) || strlen($newpassword) < 4)
+    	if (!isset($newpassword) || strlen($newpassword) < 8)
 			return 'Ton nouveau mot de passe est vraiment trop court 😵';
     	else if ($newpassword !== $newpassword2)
 			return 'Tu n\'as pas écrit 2 le même nouveau mot de passe 🥴';
-		array_push($frags, ', password = ', hash('sha512', $newpassword));
+		array_push($frags, ', password = ', hash_password($newpassword));
 	}
 	if (isset($firstname) && strlen($firstname) > 0) {
 		array_push($frags, ', firstName = ', $firstname);
@@ -37,13 +37,12 @@ function update_user($id, $username, $email, $newpassword, $newpassword2, $first
         return null;
 	$frags[0] = preg_replace('/,/', 'UPDATE `USERS` SET', $frags[0], 1);
 	array_push($frags, ' WHERE `id` = ', $id);
-    print_r($frags);
 	request_database(...$frags);
 	return null;
 }
 
 if (isset($_REQUEST['password']) && (isset($_REQUEST['username']) || isset($_REQUEST['email']) || isset($_REQUEST['newpassword']) || isset($_REQUEST['newpassword2']) || isset($_REQUEST['firstname']) || isset($_REQUEST['lastname']))) {
-    if (hash('sha512', $_REQUEST['password']) == $user['password']) {
+    if (verify_password($_REQUEST['password'], $user['password'])) {
         $error = update_user($user['id'], $_REQUEST['username'], $_REQUEST['email'], $_REQUEST['newpassword'], $_REQUEST['newpassword2'], $_REQUEST['firstname'], $_REQUEST['lastname']);
     } else {
         $error = 'Mot de passe actuel invalide. 😱';
@@ -66,15 +65,15 @@ if (isset($_REQUEST['password']) && (isset($_REQUEST['username']) || isset($_REQ
                 <form method="post" action="">
                     <h1>Modifier ton compte</h1>
                     <!--<label for="username">Nouveau nom d'utilisateur</label>
-                    <input id="username" type="text" name="username" placeholder="<?= $user['name'] ?>" value="<?= htmlspecialchars($_REQUEST['username'] ?? '') ?>" />-->
+                    <input id="username" type="text" name="username" placeholder="<?= htmlspecialchars($user['name']) ?>" value="<?= htmlspecialchars($_REQUEST['username'] ?? '') ?>" />-->
                     <label for="email">Nouvelle adresse e-mail</label>
-                    <input type="email" name="email" placeholder="<?= $user['email'] ?>" value="<?= htmlspecialchars($_REQUEST['email'] ?? '') ?>" autofocus />
+                    <input type="email" name="email" placeholder="<?= htmlspecialchars($user['email']) ?>" value="<?= htmlspecialchars($_REQUEST['email'] ?? '') ?>" autofocus />
                     <label for="newpassword">Nouveau mot de passe</label>
                     <input type="password" name="newpassword" placeholder="●●●●●●●●" />
                     <input type="password" name="newpassword2" placeholder="●●●●●●●●" />
                     <label for="firstname">Nouveaux prénom et nom</label>
-                    <input type="text" name="firstname" placeholder="<?= $user['firstName'] ?>" value="<?= htmlspecialchars($_REQUEST['firstname'] ?? '') ?>" />
-                    <input type="text" name="lastname" placeholder="<?= $user['lastName'] ?>" value="<?= htmlspecialchars($_REQUEST['lastname'] ?? '') ?>" />
+                    <input type="text" name="firstname" placeholder="<?= htmlspecialchars($user['firstName']) ?>" value="<?= htmlspecialchars($_REQUEST['firstname'] ?? '') ?>" />
+                    <input type="text" name="lastname" placeholder="<?= htmlspecialchars($user['lastName']) ?>" value="<?= htmlspecialchars($_REQUEST['lastname'] ?? '') ?>" />
                     <label for="password">Mot de passe actuel (nécessaire)</label>
                     <input type="password" name="password" required />
                     <input type="submit" class="good" value="Enregistrer" />

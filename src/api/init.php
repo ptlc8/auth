@@ -65,9 +65,39 @@ function request_database(...$request_frags) {
 	return $result;
 }
 
+// démarrer la session avec des cookies sécurisés
+function start_session() {
+	if (session_status() === PHP_SESSION_ACTIVE)
+		return;
+	session_set_cookie_params([
+		'httponly' => true,
+		'secure' => get_protocol() === 'https',
+		'samesite' => 'Lax'
+	]);
+	session_start();
+}
+
+// hacher un mot de passe
+function hash_password($password) {
+	return password_hash($password, PASSWORD_DEFAULT);
+}
+
+// vérifier un mot de passe (accepte aussi les anciens hashs SHA-512)
+function verify_password($password, $hash) {
+	return password_verify($password, $hash) || hash_equals($hash, hash('sha512', $password));
+}
+
+// enregistrer l'utilisateur dans la session
+function set_session_user($username, $hashed_password) {
+	start_session();
+	session_regenerate_id(true);
+	$_SESSION['username'] = $username;
+	$_SESSION['password'] = $hashed_password;
+}
+
 // connexion à un compte avec la session
 function login_from_session() {
-	session_start();
+	start_session();
 	if (!isset($_SESSION['username'], $_SESSION['password']))
 		return null;
 	return request_database('SELECT * FROM USERS WHERE `name` = ', $_SESSION['username'], ' and `password` = ', $_SESSION['password'])->fetch_assoc();
@@ -75,14 +105,40 @@ function login_from_session() {
 
 // connexion à un compte avec un nom d'utilisateur et un mot de passe
 function login($username, $password) {
-	session_start();
-	$password = hash('sha512', $password);
-	$user = request_database('SELECT * FROM USERS WHERE `name` = ', $username, ' and `password` = ', $password)->fetch_assoc();
-	if ($user !== null) {
-		$_SESSION['username'] = $username;
-		$_SESSION['password'] = $password;
+	$user = request_database('SELECT * FROM USERS WHERE `name` = ', $username)->fetch_assoc();
+	if ($user === null || !verify_password($password, $user['password']))
+		return null;
+	if (password_needs_rehash($user['password'], PASSWORD_DEFAULT)) {
+		$user['password'] = hash_password($password);
+		request_database('UPDATE USERS SET `password` = ', $user['password'], ' WHERE `id` = ', $user['id']);
 	}
+	set_session_user($user['name'], $user['password']);
 	return $user;
+}
+
+// révoquer tous les tokens d'applications d'un utilisateur
+function revoke_tokens($user_id) {
+	request_database('DELETE FROM TOKENS WHERE `user` = ', $user_id);
+}
+
+// obtenir le token CSRF de la session
+function csrf_token() {
+	start_session();
+	if (empty($_SESSION['csrf']))
+		$_SESSION['csrf'] = generate_token(32);
+	return $_SESSION['csrf'];
+}
+
+// vérifier le token CSRF envoyé avec le formulaire
+function check_csrf() {
+	return isset($_POST['csrf']) && hash_equals(csrf_token(), $_POST['csrf']);
+}
+
+// n'autoriser que les redirections vers ce site
+function safe_redirect_target($url) {
+	if (is_string($url) && preg_match('#^/([^/\\\\]|$)#', $url))
+		return $url;
+	return '.';
 }
 
 // générer un token
@@ -90,13 +146,13 @@ function generate_token($length=32) {
 	$token = '';
 	$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
 	for ($i = 0; $i < $length; $i++)
-		$token .= $chars[rand(0, strlen($chars) - 1)];
+		$token .= $chars[random_int(0, strlen($chars) - 1)];
 	return $token;
 }
 
 // déconnexion
 function logout() {
-	session_start();
+	start_session();
 	unset($_SESSION['username'], $_SESSION['password']);
 }
 

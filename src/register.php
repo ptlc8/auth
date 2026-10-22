@@ -11,7 +11,7 @@ if (isset($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password'], $_RE
 	else if (request_database('SELECT * FROM USERS WHERE `email` = ', $_REQUEST['email'])->num_rows !== 0)
 		$error = 'Cette adresse e-mail est déjà utilisée 🤔';
 	// teste si le mot de passe n'est pas trop court
-	else if (strlen($_REQUEST['password']) < 4)
+	else if (strlen($_REQUEST['password']) < 8)
 		$error = 'Ton mot de passe est vraiment trop court 😵';
 	// Teste si les mots de passe sont identiques
 	else if ($_REQUEST['password'] !== $_REQUEST['password2'])
@@ -24,13 +24,11 @@ if (isset($_REQUEST['username'], $_REQUEST['email'], $_REQUEST['password'], $_RE
 		$error = 'La vérification de ton humanité à échouer, réessaye 👽';
 	// Inscription
 	else {
-		$hashed_password = hash('sha512', $_POST['password']);
+		$hashed_password = hash_password($_POST['password']);
 		request_database('INSERT INTO `USERS` (`email`, `name`, `password`, `firstName`, `lastName`) VALUES (', $_REQUEST['email'], ', ', $_REQUEST['username'], ', ', $hashed_password, ', ', $_REQUEST['firstname'], ', ', $_REQUEST['lastname'], ')');
-		session_start();
-		$_SESSION['username'] = $_REQUEST['username'];
-		$_SESSION['password'] = $hashed_password;
+		set_session_user($_REQUEST['username'], $hashed_password);
 		if (isset($_REQUEST['go']))
-			exit(header('Location: '.$_REQUEST['go']));
+			exit(header('Location: '.safe_redirect_target($_REQUEST['go'])));
 		if (isset($_REQUEST['closeafter']))
 			$close = true;
 		else

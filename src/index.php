@@ -56,18 +56,18 @@ $tokens = request_database('SELECT * FROM `TOKENS` JOIN `APPS` ON app = id WHERE
                 <?php } else foreach ($tokens as $token) { ?>
                     <article class="box column">
                         <h3>
-                            <img height="20" src="<?= $token['icon'] ?>" />
-                            <?= $token['name'] ?>
+                            <img height="20" src="<?= htmlspecialchars($token['icon'] ?? '') ?>" />
+                            <?= htmlspecialchars($token['name']) ?>
                         </h3>
                         <span>
-                            depuis :
+                            Dernière connexion :
                             <time datetime="<?= sql_date_to_iso_date($token['date']) ?>">
                                 <?= sql_date_to_french_date($token['date']) ?>
                             </time>
                         </span>
                         <div class="row">
-                            <a class="button" href="<?= $token['url'] ?>">Voir</a>
-                            <a class="button bad" href="disconnect.php?back&app=<?= $token['app'] ?>">Déconnecter</a>
+                            <a class="button" href="<?= htmlspecialchars($token['url']) ?>">Voir</a>
+                            <a class="button bad" href="disconnect.php?back&app=<?= urlencode($token['app']) ?>">Déconnecter</a>
                         </div>
                     </article>
                 <?php } ?>

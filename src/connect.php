@@ -9,9 +9,9 @@ if (isset($_REQUEST['app'])) {
 		$user = login_from_session();
 		if ($user === null)
 			exit(header('Location: login.php?go='.urlencode($_SERVER['REQUEST_URI'])));
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && check_csrf()) {
 			$token = generate_token(16);
-			request_database('INSERT INTO `TOKENS` (`token`, `user`, `app`) VALUES (', $token, ', ', $user['id'], ', ', $_REQUEST['app'], ') ON DUPLICATE KEY UPDATE `token` = ', $token);
+			request_database('INSERT INTO `TOKENS` (`token`, `user`, `app`) VALUES (', $token, ', ', $user['id'], ', ', $_REQUEST['app'], ') ON DUPLICATE KEY UPDATE `date` = NOW(), `token` = ', $token);
 			$connected = true;
 			$params = $_REQUEST['params'] ?? '';
 			exit(header('Location: '.$app['returnUrl'].$token.'&'.$params));
@@ -31,7 +31,7 @@ if (isset($_REQUEST['app'])) {
 	</head>
 	<body>
 		<?php if (isset($app)) { ?>
-			<div class="custom-background" style="background-image: url('<?= addslashes($app['background']) ?>');"></div>
+			<div class="custom-background" style="background-image: url('<?= htmlspecialchars(addslashes($app['background'] ?? '')) ?>');"></div>
 		<?php } ?>
 		<section class="box column">
 			<?php
@@ -53,7 +53,7 @@ if (isset($_REQUEST['app'])) {
 						<?= htmlspecialchars($user['name']) ?>
 						<img width="50" src="avatar.php">
 						🔗
-						<img width="50" src="<?= $app['icon'] ?? '' ?>" />
+						<img width="50" src="<?= htmlspecialchars($app['icon'] ?? '') ?>" />
 						<?= htmlspecialchars($app['name']) ?>
 					</div>
 					<span class="helper"><u><?= htmlspecialchars($app['name']) ?></u> aura accès à :</span>
@@ -61,6 +61,7 @@ if (isset($_REQUEST['app'])) {
 						<li>ton nom d'utilisateur et ton id</li>
 						<!--<li>ton adresse e-mail</li>-->
 					</ul>
+					<input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
 					<input type="submit" value="Connecter" class="good" autofocus />
 				</form>
 			<?php } ?>

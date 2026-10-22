@@ -11,7 +11,7 @@ if (isset($_REQUEST['app'])) {
 		$user = login_from_session();
 		if ($user === null)
 			exit(header('Location: login.php?go='.urlencode($_SERVER['REQUEST_URI'])));
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && check_csrf()) {
 			request_database('DELETE FROM `TOKENS` WHERE `user` = ', $user['id'], ' AND app = ', $_REQUEST['app']);
 			/*if (isset($_REQUEST['go']))
 				exit(header('Location: '.$_REQUEST['go']));*/
@@ -35,7 +35,7 @@ if (isset($_REQUEST['app'])) {
 	</head>
 	<body>
 		<?php if (isset($app)) { ?>
-			<div class="custom-background" style="background-image: url('<?= addslashes($app['background']) ?>');"></div>
+			<div class="custom-background" style="background-image: url('<?= htmlspecialchars(addslashes($app['background'] ?? '')) ?>');"></div>
 		<?php } ?>
 		<section class="box column">
 			<?php if (!$valid_request) { ?>
@@ -53,7 +53,7 @@ if (isset($_REQUEST['app'])) {
 						<?= htmlspecialchars($user['name']) ?>
 						<img width="50" src="avatar.php">
 						❌
-						<img width="50" src="<?= $app['icon'] ?? '' ?>" />
+						<img width="50" src="<?= htmlspecialchars($app['icon'] ?? '') ?>" />
 						<?= htmlspecialchars($app['name']) ?>
 					</div>
 					<p class="error"><u><?= htmlspecialchars($app['name']) ?></u> n'aura plus accès à :</p>
@@ -61,6 +61,7 @@ if (isset($_REQUEST['app'])) {
 						<li>ton nom d'utilisateur et ton id</li>
 						<!--<li>ton adresse e-mail</li>-->
 					</ul>
+					<input type="hidden" name="csrf" value="<?= csrf_token() ?>" />
 					<input type="submit" value="Déconnecter" class="bad" />
 				</form>
 			<?php } else { ?>

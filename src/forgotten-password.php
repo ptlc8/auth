@@ -76,7 +76,7 @@ MAIL;
 				</form>
 			<?php } else { ?>
 				<?php if ($mailed) { ?>
-					<h1>Un mail à été envoyé à l'adresse <?= preg_replace('/(?<=.{4}).(?=.*@)/', '*', $email) ?> 😜</h1>
+					<h1>Un mail à été envoyé à l'adresse <?= htmlspecialchars(preg_replace('/(?<=.{4}).(?=.*@)/', '*', $email)) ?> 😜</h1>
 					<p>Dans celui-ci tu trouveras un lien pour changer ton mot de passe.</p>
 				<?php } else { ?>
 					<h1>Une erreur est survenue lors de l'envoi du mail. 😵</h1>

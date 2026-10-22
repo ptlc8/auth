@@ -6,7 +6,7 @@ if (isset($_REQUEST['username'], $_POST['password'])) {
 	$user = login($_REQUEST['username'], $_POST['password']);
 	if ($user !== null) {
 		if (isset($_REQUEST['go']))
-			exit(header('Location: '.$_REQUEST['go']));
+			exit(header('Location: '.safe_redirect_target($_REQUEST['go'])));
 		if (isset($_REQUEST['closeafter']))
 			$close = true;
 		else
